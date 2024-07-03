@@ -1,0 +1,16 @@
+{
+  "name": "@guix69/guix-grist-map",
+  "description": "Widget for showing geolocated data on a map.",
+  "homePage": "https://github.com/guix69/guix-grist-map",
+  "version": "0.0.1",
+  "grist": [
+    {
+      "name": "Map",
+      "url": "https://github.com/guix69/guix-grist-map/index.html",
+      "widgetId": "@gristlabs/widget-map#map",
+      "published": true,
+      "accessLevel": "read table",
+      "renderAfterReady": true
+    }
+  ]
+}
