@@ -275,7 +275,7 @@ function updateMap(data) {
     points.push(pt);
 
     const marker = L.marker(pt, {
-      title: name,
+      title: 'a'+name,
       id: id,
       icon: (id == selectedRowId) ?  selectedIcon    :  defaultIcon,
       pane: (id == selectedRowId) ? "selectedMarker" : "otherMarkers",
