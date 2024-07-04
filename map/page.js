@@ -281,7 +281,7 @@ function updateMap(data) {
       pane: (id == selectedRowId) ? "selectedMarker" : "otherMarkers",
     });
 
-    marker.bindPopup(name);
+    marker.bindPopup('b'+name);
     markers.addLayer(marker);
 
     popups[id] = marker;
