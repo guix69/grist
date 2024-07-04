@@ -8,7 +8,8 @@ let selectedTableId = null;
 let selectedRowId = null;
 let selectedRecords = null;
 let mode = 'multi';
-let mapSource = 'https://server.acgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
+//let mapSource = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
+let mapSource = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 let mapCopyright = 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
 // Required, Label value
 const Name = "Name";
@@ -275,13 +276,13 @@ function updateMap(data) {
     points.push(pt);
 
     const marker = L.marker(pt, {
-      title: 'a'+name,
+      title: name,
       id: id,
       icon: (id == selectedRowId) ?  selectedIcon    :  defaultIcon,
       pane: (id == selectedRowId) ? "selectedMarker" : "otherMarkers",
     });
 
-    marker.bindPopup('b'+name);
+    marker.bindPopup(name);
     markers.addLayer(marker);
 
     popups[id] = marker;
