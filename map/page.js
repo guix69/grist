@@ -184,14 +184,14 @@ async function scan(tableId, records, mappings) {
     // If address is not empty, and coordinates are empty (or were cleared by cache)
     if (addressArrivee && !record[LongitudeArrivee]) {
       // Find coordinates.
-      const result = await geocode(addressArrivee);
+      const result2 = await geocode(addressArrivee);
 
       //const resultRoute = await getRouteInfo(result.lng, result.lat);
 
       // Update them, and update cache (if the field was mapped)
       await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
-        [mappings[LongitudeArrivee]]: result.lng,
-        [mappings[LatitudeArrivee]]: result.lat,
+        [mappings[LongitudeArrivee]]: result2.lng,
+        [mappings[LatitudeArrivee]]: result2.lat,
         ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
       }] ]);
       await delay(1000);
