@@ -12,7 +12,7 @@ let mode = 'multi';
 let mapSource = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 let mapCopyright = '<a href="https://www.openstreetmap.org">Openstreetmap</a>';
 // Required, Label value
-const Name = "NameDepart";
+const NameDepart = "NameDepart";
 // Required
 const LongitudeDepart = "LongitudeDepart";
 // Required
