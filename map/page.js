@@ -12,19 +12,19 @@ let mode = 'multi';
 let mapSource = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 let mapCopyright = '<a href="https://www.openstreetmap.org">Openstreetmap</a>';
 // Required, Label value
-const Name = "Name";
+const Name = "NameDepart";
 // Required
-const Longitude = "Longitude";
+const LongitudeDepart = "LongitudeDepart";
 // Required
-const Latitude = "Latitude";
+const LatitudeDepart = "LatitudeDepart";
 // Optional - switch column to trigger geocoding
-const Geocode = 'Geocode';
+const GeocodeDepart = 'GeocodeDepart';
 // Optional - but required for geocoding. Field with address to find (might be formula)
-const Address = 'Address';
+const AddressDepart = 'AddressDepart';
 // Optional - but useful for geocoding. Blank field which map uses
 //            to store last geocoded Address. Enables map widget
 //            to automatically update the geocoding if Address is changed
-const GeocodedAddress = 'GeocodedAddress';
+const GeocodedAddressDepart = 'GeocodedAddressDepart';
 let lastRecord;
 let lastRecords;
 
@@ -145,17 +145,20 @@ async function scan(tableId, records, mappings) {
     if (record[GeocodedAddress] && record[GeocodedAddress] !== record.Address) {
       // We have caching field, and last address is diffrent.
       // So clear coordinates (as if the record wasn't scanned before)
-      record[Longitude] = null;
-      record[Latitude] = null;
+      record[LongitudeDepart] = null;
+      record[LatitudeDepart] = null;
     }
     // If address is not empty, and coordinates are empty (or were cleared by cache)
     if (address && !record[Longitude]) {
       // Find coordinates.
       const result = await geocode(address);
+
+      //const resultRoute = await getRouteInfo(result.lng, result.lat);
+
       // Update them, and update cache (if the field was mapped)
       await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
-        [mappings[Longitude]]: result.lng,
-        [mappings[Latitude]]: result.lat,
+        [mappings[LongitudeDepart]]: result.lng,
+        [mappings[LatitudeDepart]]: result.lat,
         ...(GeocodedAddress in mappings) ? {[mappings[GeocodedAddress]]: address} : undefined
       }] ]);
       await delay(1000);
@@ -164,7 +167,6 @@ async function scan(tableId, records, mappings) {
 }
 
 function scanOnNeed(mappings) {
-  console.table(mappings);
   if (!scanning && selectedTableId && selectedRecords) {
     scanning = scan(selectedTableId, selectedRecords, mappings).then(() => scanning = null).catch(() => scanning = null);
   }
@@ -187,9 +189,9 @@ function parseValue(v) {
 function getInfo(rec) {
   const result = {
     id: rec.id,
-    name: parseValue(rec[Name]),
-    lng: parseValue(rec[Longitude]),
-    lat: parseValue(rec[Latitude])
+    name: parseValue(rec[NameDepart]),
+    lng: parseValue(rec[LongitudeDepart]),
+    lat: parseValue(rec[LatitudeDepart])
   };
   return result;
 }
@@ -206,7 +208,7 @@ function updateMap(data) {
     showProblem("No data found yet");
     return;
   }
-  if (!(Longitude in data[0] && Latitude in data[0] && Name in data[0])) {
+  if (!(LongitudeDepart in data[0] && LatitudeDepart in data[0] && NameDepart in data[0])) {
     showProblem("Table does not yet have all expected columns: Name, Longitude, Latitude. You can map custom columns"+
     " in the Creator Panel.");
     return;
@@ -236,20 +238,28 @@ function updateMap(data) {
     wheelPxPerZoomLevel: 90, //px, default 60, slows scrollwheel zoom
   });
 
+  // ajout du "controlleur" pour la routing machine de Leaflet
   var routeControl = L.Routing.control({
-  waypoints: [
-    L.latLng(57.74, 11.94),
-    L.latLng(57.6792, 11.949)
-  ],
-  // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
-}).addTo(map);
+    waypoints: [],
+    router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
+  }).addTo(map);
 
-  routeControl.on('routesfound', function(e) {
-   var routes = e.routes;
-   var summary = routes[0].summary;
-   // alert distance and time in km and minutes
-   alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+
+  function getRouteInfo(lng, lat) {
+    routeControl.waypoints=[
+      L.latLng(57.74, 11.94),
+      L.latLng(57.6792, 11.949)
+    ];
+
+    routeControl.on('routesfound', function(e) {
+    var routes = e.routes;
+    var summary = routes[0].summary;
+    // alert distance and time in km and minutes
+    alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
 });
+
+  }
+
 
   // Make sure clusters always show up above points
   // Default z-index for markers is 600, 650 is where tooltipPane z-index starts
@@ -365,12 +375,12 @@ function hasCol(col, anything) {
 function defaultMapping(record, mappings) {
   if (!mappings) {
     return {
-      [Longitude]: Longitude,
-      [Name]: Name,
-      [Latitude]: Latitude,
-      [Address]: hasCol(Address, record) ? Address : null,
-      [GeocodedAddress]: hasCol(GeocodedAddress, record) ? GeocodedAddress : null,
-      [Geocode]: hasCol(Geocode, record) ? Geocode : null,
+      [LongitudeDepart]: LongitudeDepart,
+      [NameDepart]: NameDepart,
+      [LatitudeDepart]: LatitudeDepart,
+      [AddressDepart]: hasCol(AddressDepart, record) ? AddressDepart : null,
+      [GeocodedAddressDepart]: hasCol(GeocodedAddressDepart, record) ? GeocodedAddressDepart : null,
+      [GeocodeDepart]: hasCol(GeocodeDepart, record) ? GeocodeDepart : null,
     };
   }
   return mappings;
@@ -458,12 +468,12 @@ function onEditOptions() {
 const optional = true;
 grist.ready({
   columns: [
-    "Name",
-    { name: "Longitude", type: 'Numeric'} ,
-    { name: "Latitude", type: 'Numeric'},
-    { name: "Geocode", type: 'Bool', title: 'Geocode', optional},
-    { name: "Address", type: 'Text', optional, optional},
-    { name: "GeocodedAddress", type: 'Text', title: 'Geocoded Address', optional},
+    { name: "NameDepart", title: 'Libellé départ', type: 'Text'},
+    { name: "LongitudeDepart", title: 'Longitude départ', type: 'Numeric'} ,
+    { name: "LatitudeDepart", title: 'Latitude départ', type: 'Numeric'},
+    { name: "GeocodeDepart", type: 'Bool', title: 'Geocode départ', optional},
+    { name: "AddressDepart", title: 'Adresse départ', type: 'Text', optional, optional},
+    { name: "GeocodedAddressDepart", type: 'Text', title: 'Geocoded Address départ', optional},
   ],
   allowSelectBy: true,
   onEditOptions
