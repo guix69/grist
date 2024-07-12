@@ -141,9 +141,9 @@ async function scan(tableId, records, mappings) {
   if (!writeAccess) { return; }
   for (const record of records) {
     // We can only scan if Geocode column was mapped.
-    //if (!(GeocodeDepart in record)) { break; }
+    if (!(GeocodeDepart in record)) { break; }
     // And the value in the column is truthy.
-    //if (!record[GeocodeDepart]) { continue; }
+    if (!record[GeocodeDepart]) { continue; }
     // Get the address to search.
     const address = record.Address;
     // Little caching here. We will set GeocodedAddress to last address we searched,
