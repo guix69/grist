@@ -174,6 +174,7 @@ async function scan(tableId, records, mappings) {
     }
 
     // même chose pour l'arrivée
+    const addressArrivee = record.AddressArrivee;
     if (record[GeocodedAddressArrivee] && record[GeocodedAddressArrivee] !== record.AddressArrivee) {
       // We have caching field, and last address is diffrent.
       // So clear coordinates (as if the record wasn't scanned before)
