@@ -172,6 +172,30 @@ async function scan(tableId, records, mappings) {
       }] ]);
       await delay(1000);
     }
+
+    // même chose pour l'arrivée
+    if (record[GeocodedAddressArrivee] && record[GeocodedAddressArrivee] !== record.AddressArrivee) {
+      // We have caching field, and last address is diffrent.
+      // So clear coordinates (as if the record wasn't scanned before)
+      record[LongitudeArrivee] = null;
+      record[LatitudeArrivee] = null;
+    }
+    // If address is not empty, and coordinates are empty (or were cleared by cache)
+    if (addressArrivee && !record[LongitudeArrivee]) {
+      // Find coordinates.
+      const result = await geocode(addressArrivee);
+
+      //const resultRoute = await getRouteInfo(result.lng, result.lat);
+
+      // Update them, and update cache (if the field was mapped)
+      await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+        [mappings[LongitudeArrivee]]: result.lng,
+        [mappings[LatitudeArrivee]]: result.lat,
+        ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
+      }] ]);
+      await delay(1000);
+    }
+
   }
 }
 
