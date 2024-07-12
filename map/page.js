@@ -13,18 +13,24 @@ let mapSource = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 let mapCopyright = '<a href="https://www.openstreetmap.org">Openstreetmap</a>';
 // Required, Label value
 const NameDepart = "NameDepart";
+const NameArrivee = "NameArrivee";
 // Required
 const LongitudeDepart = "LongitudeDepart";
+const LongitudeArrivee = "LongitudeArrivee";
 // Required
 const LatitudeDepart = "LatitudeDepart";
+const LatitudeArrivee = "LatitudeArrivee";
 // Optional - switch column to trigger geocoding
 const GeocodeDepart = 'GeocodeDepart';
+const GeocodeArrivee = 'GeocodeArrivee';
 // Optional - but required for geocoding. Field with address to find (might be formula)
 const AddressDepart = 'AddressDepart';
+const AddressArrivee = 'AddressArrivee';
 // Optional - but useful for geocoding. Blank field which map uses
 //            to store last geocoded Address. Enables map widget
 //            to automatically update the geocoding if Address is changed
 const GeocodedAddressDepart = 'GeocodedAddressDepart';
+const GeocodedAddressArrivee = 'GeocodedAddressArrivee';
 let lastRecord;
 let lastRecords;
 
@@ -474,6 +480,12 @@ grist.ready({
     { name: "GeocodeDepart", type: 'Bool', title: 'Geocode départ', optional},
     { name: "AddressDepart", title: 'Adresse départ', type: 'Text', optional, optional},
     { name: "GeocodedAddressDepart", type: 'Text', title: 'Geocoded Address départ', optional},
+    { name: "NameArrivee", title: 'Libellé arrivée', type: 'Text'},
+    { name: "LongitudeArrivee", title: 'Longitude arrivée', type: 'Numeric'} ,
+    { name: "LatitudeArrivee", title: 'Latitude arrivée', type: 'Numeric'},
+    { name: "GeocodeArrivee", type: 'Bool', title: 'Geocode arrivée', optional},
+    { name: "AddressArrivee", title: 'Adresse arrivée', type: 'Text', optional, optional},
+    { name: "GeocodedAddressArrivee", type: 'Text', title: 'Geocoded Address arrivée', optional},
   ],
   allowSelectBy: true,
   onEditOptions
