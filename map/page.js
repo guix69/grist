@@ -140,6 +140,7 @@ async function scan(tableId, records, mappings) {
   console.log('scan');
   if (!writeAccess) { return; }
   for (const record of records) {
+    console.log(record);
     // We can only scan if Geocode column was mapped.
     if (!(GeocodeDepart in record)) { break; }
     // And the value in the column is truthy.
