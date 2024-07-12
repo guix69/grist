@@ -137,6 +137,7 @@ let writeAccess = true;
 let scanning = null;
 
 async function scan(tableId, records, mappings) {
+  console.log('scan');
   if (!writeAccess) { return; }
   for (const record of records) {
     // We can only scan if Geocode column was mapped.
