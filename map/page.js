@@ -156,7 +156,7 @@ async function scan(tableId, records, mappings) {
       record[LatitudeDepart] = null;
     }
     // If address is not empty, and coordinates are empty (or were cleared by cache)
-    if (address && !record[Longitude]) {
+    if (address && !record[LongitudeDepart]) {
       // Find coordinates.
       const result = await geocode(address);
 
