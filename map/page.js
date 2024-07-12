@@ -110,6 +110,7 @@ if (URLSearchParams && location.search && geocoder) {
 }
 
 async function geocode(address) {
+  console.log('geocode');
   return new Promise((resolve, reject) => {
     try {
       geocoder.geocode(address, (v) => {
