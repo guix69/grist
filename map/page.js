@@ -151,7 +151,7 @@ async function scan(tableId, records, mappings) {
     // so after next round - we will check if the address is indeed changed.
     // But this field is optional, if it is not in the record (not mapped)
     // we will find the location each time (if coordinates are empty).
-    if (record[GeocodedAddress] && record[GeocodedAddress] !== record.Address) {
+    if (record[GeocodedAddressDepart] && record[GeocodedAddressDepart] !== record.AddressDepart) {
       // We have caching field, and last address is diffrent.
       // So clear coordinates (as if the record wasn't scanned before)
       record[LongitudeDepart] = null;
