@@ -140,13 +140,13 @@ async function scan(tableId, records, mappings) {
   console.log('scan');
   if (!writeAccess) { return; }
   for (const record of records) {
-    console.log(record[GeocodeDepart]);
+    console.log(record);
     // We can only scan if Geocode column was mapped.
     if (!(GeocodeDepart in record)) { break; }
     // And the value in the column is truthy.
     if (!record[GeocodeDepart]) { continue; }
     // Get the address to search.
-    const address = record.Address;
+    const addressDepart = record.AddressDepart;
     // Little caching here. We will set GeocodedAddress to last address we searched,
     // so after next round - we will check if the address is indeed changed.
     // But this field is optional, if it is not in the record (not mapped)
@@ -158,9 +158,9 @@ async function scan(tableId, records, mappings) {
       record[LatitudeDepart] = null;
     }
     // If address is not empty, and coordinates are empty (or were cleared by cache)
-    if (address && !record[LongitudeDepart]) {
+    if (addressDepart && !record[LongitudeDepart]) {
       // Find coordinates.
-      const result = await geocode(address);
+      const result = await geocode(addressDepart);
 
       //const resultRoute = await getRouteInfo(result.lng, result.lat);
 
@@ -168,7 +168,7 @@ async function scan(tableId, records, mappings) {
       await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
         [mappings[LongitudeDepart]]: result.lng,
         [mappings[LatitudeDepart]]: result.lat,
-        ...(GeocodedAddress in mappings) ? {[mappings[GeocodedAddress]]: address} : undefined
+        ...(GeocodedAddressDepart in mappings) ? {[mappings[GeocodedAddressDepart]]: addressDepart} : undefined
       }] ]);
       await delay(1000);
     }
