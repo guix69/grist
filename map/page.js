@@ -292,25 +292,6 @@ function updateMap(data) {
       console.log('Totall distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
     });
 
-function getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
-  console.log('getRouteInfo');
-  routeControl.setWaypoints=[
-        L.latLng(LatitudeDepart, LongitudeDepart),
-        L.latLng(LatitudeArrivee, LongitudeArrivee)
-      ];
-  // return new Promise((resolve, reject) => {
-  //   try {
-  //     routeControl.setWaypoints=[
-  //       L.latLng(LatitudeDepart, LongitudeDepart),
-  //       L.latLng(LatitudeArrivee, LongitudeArrivee)
-  //     ];
-  //   } catch (e) {
-  //     console.log("Problem:", e);
-  //     reject(e);
-  //   }
-  // });
-}
-
   // Make sure clusters always show up above points
   // Default z-index for markers is 600, 650 is where tooltipPane z-index starts
   map.createPane('selectedMarker').style.zIndex = 620;
@@ -385,6 +366,25 @@ function getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, Longitud
   amap = map;
 
   makeSureSelectedMarkerIsShown();
+}
+
+function getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
+  console.log('getRouteInfo');
+  routeControl.setWaypoints=[
+        L.latLng(LatitudeDepart, LongitudeDepart),
+        L.latLng(LatitudeArrivee, LongitudeArrivee)
+      ];
+  // return new Promise((resolve, reject) => {
+  //   try {
+  //     routeControl.setWaypoints=[
+  //       L.latLng(LatitudeDepart, LongitudeDepart),
+  //       L.latLng(LatitudeArrivee, LongitudeArrivee)
+  //     ];
+  //   } catch (e) {
+  //     console.log("Problem:", e);
+  //     reject(e);
+  //   }
+  // });
 }
 
 function selectMaker(id) {
