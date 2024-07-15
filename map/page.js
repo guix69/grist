@@ -197,6 +197,7 @@ async function scan(tableId, records, mappings) {
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
       console.log(record[LongitudeDepart] , record[LatitudeDepart] , record[LongitudeArrivee] , record[LatitudeArrivee])
       const routeInfo = await getRouteInfo(LongitudeDepart,LatitudeDepart,LongitudeArrivee,LatitudeArrivee);
+      console.log(routeInfo);
     }
   }
 }
