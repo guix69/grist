@@ -162,8 +162,6 @@ async function scan(tableId, records, mappings) {
       // Find coordinates.
       const result = await geocode(addressDepart);
 
-      //const resultRoute = await getRouteInfo(result.lng, result.lat);
-
       // Update them, and update cache (if the field was mapped)
       await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
         [mappings[LongitudeDepart]]: result.lng,
@@ -186,8 +184,6 @@ async function scan(tableId, records, mappings) {
       // Find coordinates.
       const result2 = await geocode(addressArrivee);
 
-      //const resultRoute = await getRouteInfo(result.lng, result.lat);
-
       // Update them, and update cache (if the field was mapped)
       await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
         [mappings[LongitudeArrivee]]: result2.lng,
@@ -198,6 +194,7 @@ async function scan(tableId, records, mappings) {
     }
 
     // on calcule les distances / durées
+    console.log(record[LongitudeDepart] , record[LatitudeDepart] , record[LongitudeArrivee] , record[LatitudeArrivee])
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
       const routeInfo = await getRouteInfo(LongitudeDepart,LatitudeDepart,LongitudeArrivee,LatitudeArrivee);
     }
