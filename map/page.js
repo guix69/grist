@@ -238,19 +238,6 @@ let clearMakers = () => {};
 
 let markers = [];
 
-
-var routeControl = L.Routing.control({waypoints: [
-    L.latLng(57.74, 11.94),
-    L.latLng(57.6792, 11.949)
-  ]});
-
-  routeControl.on('routesfound', function(e) {
-      var routes = e.routes;
-      var summary = routes[0].summary;
-      // alert distance and time in km and minutes
-      console.log('Totall distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-    });
-  
 function updateMap(data) {
   data = data || selectedRecords;
   selectedRecords = data;
@@ -296,7 +283,17 @@ function updateMap(data) {
   // // ],
   //   // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
   // }).addTo(map);
-  
+  var routeControl = L.Routing.control({waypoints: [
+    L.latLng(57.74, 11.94),
+    L.latLng(57.6792, 11.949)
+  ]});
+
+  routeControl.on('routesfound', function(e) {
+      var routes = e.routes;
+      var summary = routes[0].summary;
+      // alert distance and time in km and minutes
+      console.log('Totall distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+    });
 
   // Make sure clusters always show up above points
   // Default z-index for markers is 600, 650 is where tooltipPane z-index starts
