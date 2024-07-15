@@ -283,7 +283,7 @@ function updateMap(data) {
   // // ],
   //   // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
   // }).addTo(map);
-  var routeControl = L.Routing.control();
+  var routeControl = L.Routing.control({});
 
   routeControl.on('routesfound', function(e) {
       var routes = e.routes;
