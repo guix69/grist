@@ -194,8 +194,8 @@ async function scan(tableId, records, mappings) {
     }
 
     // on calcule les distances / durées
-    console.log(record[LongitudeDepart] , record[LatitudeDepart] , record[LongitudeArrivee] , record[LatitudeArrivee])
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
+      console.log(record[LongitudeDepart] , record[LatitudeDepart] , record[LongitudeArrivee] , record[LatitudeArrivee])
       const routeInfo = await getRouteInfo(LongitudeDepart,LatitudeDepart,LongitudeArrivee,LatitudeArrivee);
     }
   }
