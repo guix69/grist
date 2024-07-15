@@ -197,7 +197,7 @@ async function scan(tableId, records, mappings) {
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
       // L.routing.control({ waypoints: [null] }); 
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
-      const routeInfo = await getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee);
+      var routeInfo = getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee);
       console.log(routeInfo);
     }
   }
