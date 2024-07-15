@@ -195,6 +195,7 @@ async function scan(tableId, records, mappings) {
 
     // on calcule les distances / durées
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
+      L.routing.control.({ waypoints: [null] }); 
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
       const routeInfo = await getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee);
       console.log(routeInfo);
@@ -275,13 +276,14 @@ function updateMap(data) {
   });
 
   // ajout du "controlleur" pour la routing machine de Leaflet
-  var routeControl = L.Routing.control({
-    waypoints: [
-    L.latLng(57.74, 11.94),
-    L.latLng(57.6792, 11.949)
-  ],
-    // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
-  }).addTo(map);
+  // var routeControl = L.Routing.control({
+  // //   waypoints: [
+  // //   L.latLng(57.74, 11.94),
+  // //   L.latLng(57.6792, 11.949)
+  // // ],
+  //   // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
+  // }).addTo(map);
+  var routeControl = L.Routing.control();
 
   routeControl.on('routesfound', function(e) {
       var routes = e.routes;
@@ -290,27 +292,23 @@ function updateMap(data) {
       console.log('Totall distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
     });
 
-async function getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
+function getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
   console.log('getRouteInfo');
-  return new Promise((resolve, reject) => {
-    try {
-      routeControl.setWaypoints=[
+  routeControl.setWaypoints=[
         L.latLng(LatitudeDepart, LongitudeDepart),
         L.latLng(LatitudeArrivee, LongitudeArrivee)
       ];
-
-    routeControl.on('routesfound', function(e) {
-      var routes = e.routes;
-      var summary = routes[0].summary;
-      // alert distance and time in km and minutes
-      console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-      resolve(summary);
-    });
-    } catch (e) {
-      console.log("Problem:", e);
-      reject(e);
-    }
-  });
+  // return new Promise((resolve, reject) => {
+  //   try {
+  //     routeControl.setWaypoints=[
+  //       L.latLng(LatitudeDepart, LongitudeDepart),
+  //       L.latLng(LatitudeArrivee, LongitudeArrivee)
+  //     ];
+  //   } catch (e) {
+  //     console.log("Problem:", e);
+  //     reject(e);
+  //   }
+  // });
 }
 
   // Make sure clusters always show up above points
