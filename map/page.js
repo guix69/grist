@@ -195,7 +195,7 @@ async function scan(tableId, records, mappings) {
 
     // on calcule les distances / durées
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
-      console.log(record[LongitudeDepart] , record[LatitudeDepart] , record[LongitudeArrivee] , record[LatitudeArrivee])
+      console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
       const routeInfo = await getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee);
       console.log(routeInfo);
     }
@@ -290,7 +290,7 @@ function updateMap(data) {
   //     console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
   //   });
 
-async function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, LatitudeArrivee) {
+async function getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
   console.log('getRouteInfo');
   return new Promise((resolve, reject) => {
     try {
@@ -304,6 +304,7 @@ async function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, L
       var summary = routes[0].summary;
       // alert distance and time in km and minutes
       console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+      resolve(summary);
     });
     } catch (e) {
       console.log("Problem:", e);
