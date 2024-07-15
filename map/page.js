@@ -199,7 +199,7 @@ async function scan(tableId, records, mappings) {
 
     // on calcule les distances / durées
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
-      getRouteInfo(LongitudeDepart,LatitudeDepart,LongitudeArrivee,LatitudeArrivee);
+      const routeInfo = await getRouteInfo(LongitudeDepart,LatitudeDepart,LongitudeArrivee,LatitudeArrivee);
     }
   }
 }
@@ -284,6 +284,7 @@ function updateMap(data) {
 
 
   function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, LatitudeArrivee) {
+    console.log('getRouteInfo');
     routeControl.waypoints=[
       L.latLng(LongitudeDepart, LatitudeDepart),
       L.latLng(LongitudeArrivee, LatitudeArrivee)
