@@ -276,10 +276,19 @@ function updateMap(data) {
 
   // ajout du "controlleur" pour la routing machine de Leaflet
   var routeControl = L.Routing.control({
-    waypoints: [],
+    waypoints: [
+    L.latLng(57.74, 11.94),
+    L.latLng(57.6792, 11.949)
+  ],
     router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
   }).addTo(map);
 
+  routeControl.on('routesfound', function(e) {
+      var routes = e.routes;
+      var summary = routes[0].summary;
+      // alert distance and time in km and minutes
+      console.log('Totalll distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+    });
 
   function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, LatitudeArrivee) {
     console.log('getRouteInfo');
@@ -289,11 +298,11 @@ function updateMap(data) {
     ];
 
     routeControl.on('routesfound', function(e) {
-    var routes = e.routes;
-    var summary = routes[0].summary;
-    // alert distance and time in km and minutes
-    console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-});
+      var routes = e.routes;
+      var summary = routes[0].summary;
+      // alert distance and time in km and minutes
+      console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+    });
 
   }
 
