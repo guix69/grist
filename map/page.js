@@ -197,6 +197,10 @@ async function scan(tableId, records, mappings) {
       await delay(1000);
     }
 
+    // on calcule les distances / durées
+    if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
+      getRouteInfo(LongitudeDepart,LatitudeDepart,LongitudeArrivee,LatitudeArrivee);
+    }
   }
 }
 
@@ -279,17 +283,17 @@ function updateMap(data) {
   }).addTo(map);
 
 
-  function getRouteInfo(lng, lat) {
+  function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, LatitudeArrivee) {
     routeControl.waypoints=[
-      L.latLng(57.74, 11.94),
-      L.latLng(57.6792, 11.949)
+      L.latLng(LongitudeDepart, LatitudeDepart),
+      L.latLng(LongitudeArrivee, LatitudeArrivee)
     ];
 
     routeControl.on('routesfound', function(e) {
     var routes = e.routes;
     var summary = routes[0].summary;
     // alert distance and time in km and minutes
-    alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+    console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
 });
 
   }
