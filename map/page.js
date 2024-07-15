@@ -290,12 +290,14 @@ function updateMap(data) {
   //     console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
   //   });
 
-  function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, LatitudeArrivee) {
-    console.log('getRouteInfo');
-    routeControl.setWaypoints=[
-      L.latLng(LatitudeDepart, LongitudeDepart),
-      L.latLng(LatitudeArrivee, LongitudeArrivee)
-    ];
+async function getRouteInfo(LongitudeDepart, LatitudeDepart, LongitudeArrivee, LatitudeArrivee) {
+  console.log('getRouteInfo');
+  return new Promise((resolve, reject) => {
+    try {
+      routeControl.setWaypoints=[
+        L.latLng(LatitudeDepart, LongitudeDepart),
+        L.latLng(LatitudeArrivee, LongitudeArrivee)
+      ];
 
     routeControl.on('routesfound', function(e) {
       var routes = e.routes;
@@ -303,9 +305,12 @@ function updateMap(data) {
       // alert distance and time in km and minutes
       console.log('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
     });
-
-  }
-
+    } catch (e) {
+      console.log("Problem:", e);
+      reject(e);
+    }
+  });
+}
 
   // Make sure clusters always show up above points
   // Default z-index for markers is 600, 650 is where tooltipPane z-index starts
