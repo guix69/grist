@@ -206,7 +206,7 @@ async function scan(tableId, records, mappings) {
       console.log(OSRM_URL);
       let promise = getURL(OSRM_URL);
       promise.then(
-        await (result) => {
+        async (result) => {
           let obj = JSON.parse(result);
           duree = obj.routes[0].duration/60;
           distance = obj.routes[0].distance/1000;
