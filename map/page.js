@@ -197,7 +197,7 @@ async function scan(tableId, records, mappings) {
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
       // L.routing.control({ waypoints: [null] }); 
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
-      let OSRM_URL = 'http://router.project-osrm.org/route/v1/driving/'+LatitudeDepart+','+LongitudeDepart+';'+LatitudeArrivee+','++';'+LongitudeArrivee+'?overview=false';
+      let OSRM_URL = 'http://router.project-osrm.org/route/v1/driving/'+LatitudeDepart+','+LongitudeDepart+';'+LatitudeArrivee+','+LongitudeArrivee+'?overview=false';
       console.log(OSRM_URL);
       let promise = getURL(OSRM_URL);
       getRouteInfo();
