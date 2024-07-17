@@ -206,13 +206,15 @@ async function scan(tableId, records, mappings) {
       let promise = getURL(OSRM_URL);
       promise.then(
         (result) => {
-            console.log(result);
-            // await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
-            //   [mappings[LongitudeArrivee]]: result2.lng,
-            //   [mappings[LatitudeArrivee]]: result2.lat,
-            //   ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
-            // }] ]);
-            // await delay(1000);
+          route = JSON.parse(result);
+          console.log(route);
+
+          // await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+          //   [mappings[LongitudeArrivee]]: result2.lng,
+          //   [mappings[LatitudeArrivee]]: result2.lat,
+          //   ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
+          // }] ]);
+          // await delay(1000);
         },
         (error) => {
             console.log('We have encountered an Error!');
