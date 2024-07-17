@@ -206,20 +206,21 @@ async function scan(tableId, records, mappings) {
       console.log(OSRM_URL);
       let promise = getURL(OSRM_URL);
       promise.then(
-        (result) => {
+        await (result) => {
           let obj = JSON.parse(result);
           duree = obj.routes[0].duration/60;
           distance = obj.routes[0].distance/1000;
+
+          await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+            [mappings[Duree]]: duree,
+            [mappings[Distance]]: distance
+          }] ]);
+          await delay(1000);
         },
         (error) => {
             console.log('We have encountered an Error!');
       });
 
-      await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
-        [mappings[Duree]]: obj.routes[0].duration/60,
-        [mappings[Distance]]: obj.routes[0].distance/1000
-      }] ]);
-      await delay(1000);
       // getRouteInfo();
 
     }
