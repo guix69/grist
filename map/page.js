@@ -201,9 +201,7 @@ async function scan(tableId, records, mappings) {
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee] && !record[Duree]) {
       let duree = null;
       let distance = null;
-      console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
-      let OSRM_URL = 'https://router.project-osrm.org/route/v1/driving/'+record[LatitudeDepart]+','+record[LongitudeDepart]+';'+record[LatitudeArrivee]+','+record[LongitudeArrivee]+'?overview=false';
-      console.log(OSRM_URL);
+      let OSRM_URL = 'https://router.project-osrm.org/route/v1/driving/'+record[LongitudeDepart]+','+record[LatitudeDepart]+';'+record[LongitudeArrivee]+','+record[LatitudeArrivee]+'?overview=false';
       let promise = getURL(OSRM_URL);
       promise.then(
         async (result) => {
