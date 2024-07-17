@@ -210,12 +210,11 @@ async function scan(tableId, records, mappings) {
           console.log(obj.routes[0].duration/60);
           console.log(obj.routes[0].distance/1000);
 
-          // await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
-          //   [mappings[LongitudeArrivee]]: result2.lng,
-          //   [mappings[LatitudeArrivee]]: result2.lat,
-          //   ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
-          // }] ]);
-          // await delay(1000);
+          await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+            [mappings[Duree]]: obj.routes[0].duration/60,
+            [mappings[Distance]]: obj.routes[0].distance/1000
+          }] ]);
+          await delay(1000);
         },
         (error) => {
             console.log('We have encountered an Error!');
