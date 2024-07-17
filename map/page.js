@@ -144,6 +144,7 @@ async function scan(tableId, records, mappings) {
   console.log('scan');
   if (!writeAccess) { return; }
   for (const record of records) {
+    let calcRoute = false;
     // console.log(record);
     // We can only scan if Geocode column was mapped.
     //if (!(GeocodeDepart in record)) { break; }
@@ -173,13 +174,12 @@ async function scan(tableId, records, mappings) {
         ...(GeocodedAddressDepart in mappings) ? {[mappings[GeocodedAddressDepart]]: addressDepart} : undefined
       }] ]);
       await delay(1000);
+      calcRoute = true;
     }
 
     // même chose pour l'arrivée
     const addressArrivee = record.AddressArrivee;
     if (record[GeocodedAddressArrivee] && record[GeocodedAddressArrivee] !== record.AddressArrivee) {
-      // We have caching field, and last address is diffrent.
-      // So clear coordinates (as if the record wasn't scanned before)
       record[LongitudeArrivee] = null;
       record[LatitudeArrivee] = null;
     }
@@ -195,10 +195,11 @@ async function scan(tableId, records, mappings) {
         ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
       }] ]);
       await delay(1000);
+      calcRoute = true;
     }
 
     // on calcule les distances / durées
-    if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee] && !record[Duree]) {
+    if ((calcRoute) || (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee] && !record[Duree])) {
       let duree = null;
       let distance = null;
       let OSRM_URL = 'https://router.project-osrm.org/route/v1/driving/'+record[LongitudeDepart]+','+record[LatitudeDepart]+';'+record[LongitudeArrivee]+','+record[LatitudeArrivee]+'?overview=false';
