@@ -31,6 +31,10 @@ const AddressArrivee = 'AddressArrivee';
 //            to automatically update the geocoding if Address is changed
 const GeocodedAddressDepart = 'GeocodedAddressDepart';
 const GeocodedAddressArrivee = 'GeocodedAddressArrivee';
+
+const Duree = 'Duree';
+const Distance = 'Distance';
+
 let lastRecord;
 let lastRecords;
 
@@ -194,7 +198,7 @@ async function scan(tableId, records, mappings) {
     }
 
     // on calcule les distances / durées
-    if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
+    if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee] && !record[Duree]) {
       // L.routing.control({ waypoints: [null] }); 
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
       let OSRM_URL = 'https://router.project-osrm.org/route/v1/driving/'+record[LatitudeDepart]+','+record[LongitudeDepart]+';'+record[LatitudeArrivee]+','+record[LongitudeArrivee]+'?overview=false';
@@ -580,6 +584,8 @@ grist.ready({
     { name: "GeocodeArrivee", type: 'Bool', title: 'Geocode arrivée', optional},
     { name: "AddressArrivee", title: 'Adresse arrivée', type: 'Text', optional, optional},
     { name: "GeocodedAddressArrivee", type: 'Text', title: 'Geocoded Address arrivée', optional},
+    { name: "Duree", type: 'Numeric', title: 'Durée', optional},
+    { name: "Distance", type: 'Numeric', title: 'Distance', optional},
   ],
   allowSelectBy: true,
   onEditOptions
