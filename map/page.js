@@ -197,10 +197,24 @@ async function scan(tableId, records, mappings) {
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
       // L.routing.control({ waypoints: [null] }); 
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
-      let OSRM_URL = 'http://router.project-osrm.org/route/v1/driving/'+record[LatitudeDepart]+','+record[LongitudeDepart]+';'+record[LatitudeArrivee]+','+record[LongitudeArrivee]+'?overview=false';
+      let OSRM_URL = 'https://router.project-osrm.org/route/v1/driving/'+record[LatitudeDepart]+','+record[LongitudeDepart]+';'+record[LatitudeArrivee]+','+record[LongitudeArrivee]+'?overview=false';
       console.log(OSRM_URL);
       let promise = getURL(OSRM_URL);
-      getRouteInfo();
+      promise.then(
+        (result) => {
+            console.log({result});
+            // await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+            //   [mappings[LongitudeArrivee]]: result2.lng,
+            //   [mappings[LatitudeArrivee]]: result2.lat,
+            //   ...(GeocodedAddressArrivee in mappings) ? {[mappings[GeocodedAddressArrivee]]: addressArrivee} : undefined
+            // }] ]);
+            // await delay(1000);
+        },
+        (error) => {
+            console.log('We have encountered an Error!');
+      });
+
+      // getRouteInfo();
 
     }
   }
@@ -391,16 +405,16 @@ function getURL(URL) {
 }
 
 
-const getRouteInfo = () => {
-    promise.then(
-        (result) => {
-            console.log({result}); // Log the result of 50 Pokemons
-        },
-        (error) => {
-            // As the URL is a valid one, this will not be called.
-            console.log('We have encountered an Error!'); // Log an error
-    });
-}
+// const getRouteInfo = () => {
+//     promise.then(
+//         (result) => {
+//             console.log({result}); // Log the result
+//         },
+//         (error) => {
+//             // As the URL is a valid one, this will not be called.
+//             console.log('We have encountered an Error!'); // Log an error
+//     });
+// }
 
 
 
