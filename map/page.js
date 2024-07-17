@@ -197,8 +197,11 @@ async function scan(tableId, records, mappings) {
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee]) {
       // L.routing.control({ waypoints: [null] }); 
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
-      var routeInfo = getRouteInfo(LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee);
-      console.log(routeInfo);
+      let OSRM_URL = 'http://router.project-osrm.org/route/v1/driving/'+LatitudeDepart+','+LongitudeDepart+';'+LatitudeArrivee+','++';'+LongitudeArrivee+'?overview=false';
+      console.log(OSRM_URL);
+      let promise = getURL(OSRM_URL);
+      getRouteInfo();
+
     }
   }
 }
@@ -276,24 +279,24 @@ function updateMap(data) {
   });
 
   // ajout du "controlleur" pour la routing machine de Leaflet
-  var routeControl = L.Routing.control({
-    waypoints: [
-    L.latLng(57.74, 11.94),
-    L.latLng(57.6792, 11.949)
-  ]
-  //   // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
-  }).addTo(map);
+  // var routeControl = L.Routing.control({
+  //   waypoints: [
+  //   L.latLng(57.74, 11.94),
+  //   L.latLng(57.6792, 11.949)
+  // ]
+  // //   // router: L.Routing.mapbox('pk.eyJ1IjoiZ3VpeDY5IiwiYSI6ImNseWZ3b2FsYzAzdXIyanNkZW00bXhweGkifQ.Ied47cTbU0Sci8bOSdsikw')
+  // }).addTo(map);
   // var routeControl = L.Routing.control({waypoints: [
   //   L.latLng(57.74, 11.94),
   //   L.latLng(57.6792, 11.949)
   // ]});
 
-  routeControl.on('routesfound', function(e) {
-      var routes = e.routes;
-      var summary = routes[0].summary;
-      // alert distance and time in km and minutes
-      console.log('Totall distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-    });
+  // routeControl.on('routesfound', function(e) {
+  //     var routes = e.routes;
+  //     var summary = routes[0].summary;
+  //     // alert distance and time in km and minutes
+  //     console.log('Totall distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+  //   });
 
   // Make sure clusters always show up above points
   // Default z-index for markers is 600, 650 is where tooltipPane z-index starts
@@ -371,24 +374,54 @@ function updateMap(data) {
   makeSureSelectedMarkerIsShown();
 }
 
-function getRouteInfo(routeControl, LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
-  console.log('getRouteInfo');
-  routeControl.setWaypoints=[
-        L.latLng(LatitudeDepart, LongitudeDepart),
-        L.latLng(LatitudeArrivee, LongitudeArrivee)
-      ];
-  // return new Promise((resolve, reject) => {
-  //   try {
-  //     routeControl.setWaypoints=[
-  //       L.latLng(LatitudeDepart, LongitudeDepart),
-  //       L.latLng(LatitudeArrivee, LongitudeArrivee)
-  //     ];
-  //   } catch (e) {
-  //     console.log("Problem:", e);
-  //     reject(e);
-  //   }
-  // });
+function getURL(URL) {
+  let promise = new Promise(function (resolve, reject) {
+    let req = new XMLHttpRequest();
+    req.open("GET", URL);
+    req.onload = function () {
+      if (req.status == 200) {
+        resolve(req.response);
+      } else {
+        reject("There is an Error!");
+      }
+    };
+    req.send();
+  });
+  return promise;
 }
+
+
+const getRouteInfo = () => {
+    promise.then(
+        (result) => {
+            console.log({result}); // Log the result of 50 Pokemons
+        },
+        (error) => {
+            // As the URL is a valid one, this will not be called.
+            console.log('We have encountered an Error!'); // Log an error
+    });
+}
+
+
+
+// function getRouteInfo(routeControl, LatitudeDepart, LongitudeDepart, LatitudeArrivee, LongitudeArrivee) {
+//   console.log('getRouteInfo');
+//   routeControl.setWaypoints=[
+//         L.latLng(LatitudeDepart, LongitudeDepart),
+//         L.latLng(LatitudeArrivee, LongitudeArrivee)
+//       ];
+//   // return new Promise((resolve, reject) => {
+//   //   try {
+//   //     routeControl.setWaypoints=[
+//   //       L.latLng(LatitudeDepart, LongitudeDepart),
+//   //       L.latLng(LatitudeArrivee, LongitudeArrivee)
+//   //     ];
+//   //   } catch (e) {
+//   //     console.log("Problem:", e);
+//   //     reject(e);
+//   //   }
+//   // });
+// }
 
 function selectMaker(id) {
    // Reset the options from the previously selected marker.
