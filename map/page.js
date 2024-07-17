@@ -199,7 +199,8 @@ async function scan(tableId, records, mappings) {
 
     // on calcule les distances / durées
     if (record[LongitudeDepart] && record[LatitudeDepart] && record[LongitudeArrivee] && record[LatitudeArrivee] && !record[Duree]) {
-      // L.routing.control({ waypoints: [null] }); 
+      let duree = null;
+      let distance = null;
       console.log(record[LatitudeDepart] ,record[LongitudeDepart] , record[LatitudeArrivee],  record[LongitudeArrivee] )
       let OSRM_URL = 'https://router.project-osrm.org/route/v1/driving/'+record[LatitudeDepart]+','+record[LongitudeDepart]+';'+record[LatitudeArrivee]+','+record[LongitudeArrivee]+'?overview=false';
       console.log(OSRM_URL);
@@ -207,19 +208,18 @@ async function scan(tableId, records, mappings) {
       promise.then(
         (result) => {
           let obj = JSON.parse(result);
-          console.log(obj.routes[0].duration/60);
-          console.log(obj.routes[0].distance/1000);
-
-          await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
-            [mappings[Duree]]: obj.routes[0].duration/60,
-            [mappings[Distance]]: obj.routes[0].distance/1000
-          }] ]);
-          await delay(1000);
+          duree = obj.routes[0].duration/60;
+          distance = obj.routes[0].distance/1000;
         },
         (error) => {
             console.log('We have encountered an Error!');
       });
 
+      await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
+        [mappings[Duree]]: obj.routes[0].duration/60,
+        [mappings[Distance]]: obj.routes[0].distance/1000
+      }] ]);
+      await delay(1000);
       // getRouteInfo();
 
     }
