@@ -206,7 +206,7 @@ async function scan(tableId, records, mappings) {
       let promise = getURL(OSRM_URL);
       promise.then(
         (result) => {
-            console.log({result});
+            console.log(result.routes);
             // await grist.docApi.applyUserActions([ ['UpdateRecord', tableId, record.id, {
             //   [mappings[LongitudeArrivee]]: result2.lng,
             //   [mappings[LatitudeArrivee]]: result2.lat,
